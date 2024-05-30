@@ -1,6 +1,9 @@
 import constants
 import json
 import os
+import logging
+import time
+import datetime
 
 from pathlib import Path
 
@@ -25,16 +28,23 @@ class NEM12Transformer:
         return ",".join([nmi, interval_len, interval_data])
 
     def generate_statistics(self, fp: str):
-        with open(self._statistics_fp(fp), "w+") as outfile:
-            json.dump(dict(
-                num_nmi_date_pairs=len(self.num_nmi_date_set),
-            ), outfile)
+        stats_file = self._statistics_fp(fp)
+        logging.info(f"generating statistics at {stats_file}")
+
+        with open(stats_file, "w+") as outfile:
+            json.dump(dict(num_nmi_date_pairs=len(self.num_nmi_date_set)), outfile)
 
     def process(self, fp: str) ->  str :
         self._make_output_folder()
+        output_fp = self._temp_output_fp(fp)
+
+        logging.info(f"transforming NEM12 file: {fp}")
+        logging.info(f"generating output at {output_fp}")
+
+        start = time.time()
 
         with open(fp, "r", encoding="UTF-8") as infile, \
-            open(self._temp_output_fp(fp), "w+", encoding="UTF-8") as outfile:
+            open(output_fp, "w+", encoding="UTF-8") as outfile:
 
             current_nmi = ""
             current_nmi_interval = ""
@@ -57,5 +67,8 @@ class NEM12Transformer:
                 )
                 self.num_nmi_date_set.add((current_nmi, tkns[constants.NME12_300_INTERVAL_DATE_IDX]))
 
+        end = time.time()
+        logging.info(f"processing completed in {str(datetime.timedelta(seconds=end - start))}s")
+
         self.generate_statistics(fp)
-        return self._temp_output_fp(fp)
+        return output_fp

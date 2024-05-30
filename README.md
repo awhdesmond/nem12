@@ -2,17 +2,24 @@
 
 This CLI program will process in a local or remote NEM12 file and and generates `INSERT` statements for `meter_readings` table.
 
+* Please ensure the implementation is prepared to handle files of very large sizes.
+* For this assignment success would mean as close to production grade implementation as possible, which means
+    * idiomatic code structuring,
+    * readability,
+    * performance optimization,
+    * basic testing,
+    * and anything else that you deem feasible.
+
 ## CLI Options
 
-* `--filepath`: path to NEM12 file.
-* `--output-format`: either output to csv file or sql file with `INSERT` statements
-* `--num-workers`: number of workers to process NMIs
-
+| Option | Description |
+|--------|-------------|
+| `--filepath` | path to NEM12 file |
+| `--output-format` | `csv` or `sql`. If `sql` is selected, it will generate text files with `INSERT` statements |
 
 ## NEM12 Data Format
 
-NEM12 is a file format for storing interval metering data for a NMI (National Meter Identifier).
-
+NEM12 is a csv file format for distributing metering data for a NMI (National Meter Identifier) as specified by the Australian Energy Market Operator (AEMO).
 
 ### NMI Data Details (200)
 
@@ -65,7 +72,7 @@ create table meter_readings (
 
 The table below lists the number of households in various cities and the estimated sizes of their NEM12 files for a period of 30 days, with E1E2 NMI Configuration.
 
-* NME12 File Size = `30 * (number of households) * (86B) * 2`
+* NME12 File Size = `30 days * (number of households) * (~86 Bytes) * 2`
 
 
 | City      | Households | Estimated Data Size |
