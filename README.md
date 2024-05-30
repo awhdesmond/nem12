@@ -1,7 +1,5 @@
 # NEM12 Data Loader
 
-This CLI program will process in a local or remote NEM12 file and and generates `INSERT` statements for `meter_readings` table.
-
 * Please ensure the implementation is prepared to handle files of very large sizes.
 * For this assignment success would mean as close to production grade implementation as possible, which means
     * idiomatic code structuring,
@@ -10,7 +8,17 @@ This CLI program will process in a local or remote NEM12 file and and generates 
     * basic testing,
     * and anything else that you deem feasible.
 
+
+Functional requirements for energy metering systems includes:
+
+* Scalable ingestion
+* Low latency ad-hoc queries for individual meters
+* Analytics and aggregations
+
+
 ## CLI Options
+
+This CLI program will process a local NEM12 file and and generates `INSERT` statements for `meter_readings` table.
 
 | Option | Description |
 |--------|-------------|
@@ -72,18 +80,20 @@ create table meter_readings (
 
 The table below lists the number of households in various cities and the estimated sizes of their NEM12 files for a period of 30 days, with E1E2 NMI Configuration.
 
-* NME12 File Size = `30 days * (number of households) * (~86 Bytes) * 2`
 
-
-| City      | Households | Estimated Data Size |
+| City      | Households | # SQL Insert Lines  |
 |-----------|------------|---------------------|
-| Singapore | 1,425,100  |      7.35 GB        |
-| Sydney    | 2,076,284  |      10.71 GB       |
-| Tokyo     | 6,946,000  |      35.841 GB      |
+| Singapore | 1,425,100  |     42,750,00       |
+| Sydney    | 2,076,284  |     62,288,520      |
+| Tokyo     | 6,946,000  |     208,380,000     |
 
 
 ## References
 
 * https://www.energyaustralia.com.au/resources/PDFs/User%20Guide_v3.pdf
 * https://devblogs.microsoft.com/cosmosdb/scaling-iot-time-series-metering-workloads-with-azure-cosmos-db-for-postgresql/
-* https://github.com/aguinane/nem-reader
+* https://www.yurika.com.au/wp-content/uploads/2022/01/NEM12-Fact-Sheet.pdf
+
+```bash
+find . -type f | time xargs -n1 -P32 sh -c “psql -U citus -c \”\\copy demo.meter_data from ‘\$0’ with csv\””;
+```

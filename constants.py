@@ -13,3 +13,7 @@ OUTPUT_FMT_SQL = "sql"
 
 DEFAULT_OUTPUT_DIR="output"
 DEFAULT_SQL_TABLE_NAME="meter_readings"
+
+COL_NMI = "nmi"
+COL_TIMESTAMP = "timestamp"
+COL_CONSUMPTION = "consumption"
