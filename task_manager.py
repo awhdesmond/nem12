@@ -7,13 +7,16 @@ import logging
 from dataclasses import dataclass
 from typing import List
 
-DEFAULT_NEM12_INTERVAL_LEN = 30
 
 @dataclass
 class NEM12_200_Block:
     nmi: str
     data_records: List[str]
-    interval_length: int = DEFAULT_NEM12_INTERVAL_LEN
+    interval_length: int
+
+
+    def num_values(self) -> int:
+        return 1440 // self.interval_length
 
 @dataclass
 class MeterConsumption:
@@ -77,10 +80,11 @@ class Executor:
                 logging.info(f"executor {self.idx} stopping")
                 break
 
+            num_values = item.num_values()
             for record in item.data_records:
                 tkns = record.split(",")
                 timestamp = tkns[constants.NME12_300_INTERVAL_DATE_IDX]
-                consumption = self.sum_interval_values(tkns[2:50])
+                consumption = self.sum_interval_values(tkns[2:2+num_values])
 
                 key = (item.nmi, timestamp)
                 if key not in self.meter_consumption_map:

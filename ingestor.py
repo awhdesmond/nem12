@@ -7,8 +7,6 @@ from tqdm import tqdm
 from task_manager import TaskManager, NEM12_200_Block
 
 
-NEM12_200_FIRST_DELIM_IDX = 4
-
 class Ingestor:
 
     def __init__(self, tm: TaskManager):
@@ -30,9 +28,12 @@ class Ingestor:
                     if current_nmi_block is not None:
                         self.tm.allocate_200_block_to_executor(current_nmi_block)
 
-                    second_delim_idx = line.index(",", NEM12_200_FIRST_DELIM_IDX)
-                    nmi = line[NEM12_200_FIRST_DELIM_IDX:second_delim_idx]
-                    current_nmi_block = NEM12_200_Block(nmi=nmi, data_records=[])
+                    tkns = line.split(",")
+                    current_nmi_block = NEM12_200_Block(
+                        nmi=tkns[constants.NME12_200_NMI_IDX],
+                        data_records=[],
+                        interval_length=int(tkns[constants.NME12_200_INTERVAL_LEN_IDX])
+                    )
                     continue
 
                 # NME 300
