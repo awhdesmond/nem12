@@ -8,7 +8,7 @@
     * basic testing,
     * and anything else that you deem feasible.
 
-Functional requirements for energy metering systems includes:
+Possible functional requirements for energy metering systems includes:
 
 * Scalable ingestion
 * Low latency ad-hoc queries for individual meters
@@ -16,8 +16,6 @@ Functional requirements for energy metering systems includes:
 
 
 ## CLI Options
-
-This CLI program will process a local NEM12 file and and generates `INSERT` statements for `meter_readings` table.
 
 ```bash
 Usage: main.py [OPTIONS]
@@ -67,6 +65,12 @@ docker run -d --name pgadmin \
 
 brew install flyway
 make db
+
+
+# Use postgres COPY command to bulk load data
+pushd output
+find . -type f | time xargs -n1 -P32 sh -c "psql -U postgres -c \"\\copy meter_readings from '\$0' with CSV\"";
+popd
 ```
 
 ## Household Statistics
@@ -82,12 +86,11 @@ The table below lists the number of households in various cities and the estimat
 
 To generate simulated data: run `make data`.
 
+> `gen_data.py` generates 90 million records (1,500,000 * 30 * 2) by default
+
 ## References
 
 * https://www.energyaustralia.com.au/resources/PDFs/User%20Guide_v3.pdf
 * https://devblogs.microsoft.com/cosmosdb/scaling-iot-time-series-metering-workloads-with-azure-cosmos-db-for-postgresql/
 * https://www.yurika.com.au/wp-content/uploads/2022/01/NEM12-Fact-Sheet.pdf
 
-```bash
-find . -type f | time xargs -n1 -P32 sh -c “psql -U citus -c \”\\copy demo.meter_data from ‘\$0’ with csv\””;
-```
