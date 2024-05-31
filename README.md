@@ -53,7 +53,7 @@ create table meter_readings (
 ```bash
 mkdir output
 
-/Applications/Docker.app/Contents/Resources/bin/docker run -d --name postgres \
+docker run -d --name postgres \
     -e POSTGRES_USER=postgres \
     -e POSTGRES_PASSWORD=postgres \
     -p 5432:5432 \
@@ -74,7 +74,6 @@ make db
 ```bash
 python3 main.py --file <path-to-nem12> --num-executors=4
 
-
 pushd output
 # Import SQL statements
 find . -type f | xargs -n1 -P32 sh -c "psql -U postgres -f \$0"
@@ -82,6 +81,12 @@ find . -type f | xargs -n1 -P32 sh -c "psql -U postgres -f \$0"
 # OR Use postgres COPY command to bulk load data
 find . -type f | xargs -n1 -P32 sh -c "psql -U postgres -c \"\\copy meter_readings (nmi, timestamp, consumption) from '\$0' DELIMITERS ',' CSV\""
 popd
+```
+
+## Testing
+
+```bash
+make test
 ```
 
 

@@ -88,7 +88,7 @@ def generate_interval_value_cols() -> List[str]:
     """
     For interval records using 30-min intervals, we will have 48 cols
     """
-    return [f"_c{i}" for i in range(4,23)]
+    return [f"_c{i}" for i in range(4,52)]
 
 def output_file_name(fp: str) -> str:
     return f"{constants.DEFAULT_OUTPUT_DIR}/{Path(fp).stem}.output"
