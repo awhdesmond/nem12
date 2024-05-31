@@ -19,12 +19,12 @@ def main(file: str, log_level: str, num_executors: int, output_format: str):
         format='%(asctime)s %(levelname)s:%(name)s:%(message)s'
     )
 
-    tm = TaskManager(output_format, log_level, num_executors)
+    tm = TaskManager(constants.DEFAULT_OUTPUT_DIR, output_format, log_level, num_executors)
     ingestor = Ingestor(tm)
 
     start = time.time()
     tm.start()
-    ingestor.process(file)
+    ingestor.ingest(file)
     tm.wait()
 
     end = time.time()
