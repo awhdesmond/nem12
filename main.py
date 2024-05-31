@@ -11,7 +11,7 @@ from ingestor import Ingestor
 @click.command()
 @click.option('--file', '-f', help="path to NEM12 file.")
 @click.option('--log-level', default="INFO", help="log level")
-@click.option('--num-executors', default=multiprocessing.cpu_count(), help="number of executors")
+@click.option('--num-executors', default=multiprocessing.cpu_count(), help="number of executors, by default is number of CPU cores")
 @click.option('--output-format', '-o', type=click.Choice([constants.OUTPUT_FMT_CSV, constants.OUTPUT_FMT_SQL]), default="csv", help="either output to csv or sql with `INSERT` statements")
 def main(file: str, log_level: str, num_executors: int, output_format: str):
     logging.basicConfig(

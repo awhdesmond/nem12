@@ -26,8 +26,7 @@ class TestIngestor(unittest.TestCase):
 
         with open("test_output/executor-0.output.csv", "r") as f:
             got = f.read()
-            want = """nmi,timestamp,consumption
-NEM1202022,20050401,0.0
+            want = """NEM1202022,20050401,0.0
 NEM1202022,20050402,0.021
 NEM1202022,20050403,1866.6820000000002
 NEM1202022,20050404,1376.3999999999999

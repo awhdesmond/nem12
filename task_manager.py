@@ -30,7 +30,7 @@ class MeterConsumption:
     def to_sql_insert(self) -> str:
         return " ".join([
             f"INSERT INTO {constants.DEFAULT_SQL_TABLE_NAME}({constants.COL_NMI}, {constants.COL_TIMESTAMP}, {constants.COL_CONSUMPTION})",
-            f"VALUES('{self.nmi}', {self.timestamp}, {self.consumption})",
+            f"VALUES('{self.nmi}', '{self.timestamp}', {self.consumption})",
             f"ON CONFLICT ({constants.COL_NMI}, {constants.COL_TIMESTAMP}) DO UPDATE SET {constants.COL_CONSUMPTION} = {self.consumption};\n"
         ])
 
@@ -54,7 +54,6 @@ class Executor:
     def output_meter_consumption_to_csv(self):
         with open(self.make_output_filename(), "w+") as outfile:
             writer = csv.writer(outfile)
-            writer.writerow([constants.COL_NMI, constants.COL_TIMESTAMP, constants.COL_CONSUMPTION])
             for line in self.meter_consumption_map.values():
                 writer.writerow(line.to_csv_row())
 

@@ -23,7 +23,7 @@ Usage: main.py [OPTIONS]
 Options:
   -f, --file TEXT                path to NEM12 file.
   --log-level TEXT               log level
-  --num-executors INTEGER        number of executors
+  --num-executors INTEGER        number of executors, by default is number of CPU cores
   -o, --output-format [csv|sql]  either output to csv or sql with `INSERT`
                                  statements
   --help                         Show this message and exit.
@@ -51,10 +51,13 @@ create table meter_readings (
 
 
 ```bash
-docker run -d --name postgres \
+mkdir output
+
+/Applications/Docker.app/Contents/Resources/bin/docker run -d --name postgres \
     -e POSTGRES_USER=postgres \
     -e POSTGRES_PASSWORD=postgres \
     -p 5432:5432 \
+    -v `pwd`/output:/output \
     postgres:16.2
 
 docker run -d --name pgadmin \
@@ -65,13 +68,22 @@ docker run -d --name pgadmin \
 
 brew install flyway
 make db
+```
+
+## Example usage
+```bash
+python3 main.py --file <path-to-nem12> --num-executors=4
 
 
-# Use postgres COPY command to bulk load data
 pushd output
-find . -type f | time xargs -n1 -P32 sh -c "psql -U postgres -c \"\\copy meter_readings from '\$0' with CSV\"";
+# Import SQL statements
+find . -type f | xargs -n1 -P32 sh -c "psql -U postgres -f \$0"
+
+# OR Use postgres COPY command to bulk load data
+find . -type f | xargs -n1 -P32 sh -c "psql -U postgres -c \"\\copy meter_readings (nmi, timestamp, consumption) from '\$0' DELIMITERS ',' CSV\""
 popd
 ```
+
 
 ## Household Statistics
 

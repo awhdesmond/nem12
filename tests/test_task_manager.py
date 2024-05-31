@@ -20,7 +20,7 @@ class TestMeterConsumption(unittest.TestCase):
     def test_to_sql_insert(self):
         mc = MeterConsumption("nmi", "20201112", 333.456)
         got = mc.to_sql_insert()
-        want = "INSERT INTO meter_readings(nmi, timestamp, consumption) VALUES('nmi', 20201112, 333.456) ON CONFLICT (nmi, timestamp) DO UPDATE SET consumption = 333.456;\n"
+        want = "INSERT INTO meter_readings(nmi, timestamp, consumption) VALUES('nmi', '20201112', 333.456) ON CONFLICT (nmi, timestamp) DO UPDATE SET consumption = 333.456;\n"
 
         self.assertEqual(got, want, f"got = {got}, want ={want}")
 
@@ -65,7 +65,7 @@ class TestExecutor(unittest.TestCase):
                     ("nmi", "20201112"): MeterConsumption("nmi", "20201112", 333.456),
                     ("nmi", "20201113"): MeterConsumption("nmi", "20201113", 222.456)
                 },
-                "INSERT INTO meter_readings(nmi, timestamp, consumption) VALUES('nmi', 20201112, 333.456) ON CONFLICT (nmi, timestamp) DO UPDATE SET consumption = 333.456;\nINSERT INTO meter_readings(nmi, timestamp, consumption) VALUES('nmi', 20201113, 222.456) ON CONFLICT (nmi, timestamp) DO UPDATE SET consumption = 222.456;\n"
+                "INSERT INTO meter_readings(nmi, timestamp, consumption) VALUES('nmi', '20201112', 333.456) ON CONFLICT (nmi, timestamp) DO UPDATE SET consumption = 333.456;\nINSERT INTO meter_readings(nmi, timestamp, consumption) VALUES('nmi', '20201113', 222.456) ON CONFLICT (nmi, timestamp) DO UPDATE SET consumption = 222.456;\n"
             ),
             TestCase(
                 constants.OUTPUT_FMT_CSV,
@@ -73,7 +73,7 @@ class TestExecutor(unittest.TestCase):
                     ("nmi", "20201112"): MeterConsumption("nmi", "20201112", 333.456),
                     ("nmi", "20201113"): MeterConsumption("nmi", "20201113", 222.456)
                 },
-                "nmi,timestamp,consumption\nnmi,20201112,333.456\nnmi,20201113,222.456\n"
+                "nmi,20201112,333.456\nnmi,20201113,222.456\n"
             ),
         ]
 
@@ -92,7 +92,7 @@ class TestExecutor(unittest.TestCase):
 
         with open(self.executor.make_output_filename(), "r") as infile:
             got = infile.read()
-            want = "nmi,timestamp,consumption\nnmi,20201112,86684.613\n"
+            want = "nmi,20201112,86684.613\n"
             self.assertEqual(got, want, f"got = {got}, want ={want}")
 
 class TestTaskManager(unittest.TestCase):
