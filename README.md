@@ -103,7 +103,7 @@ The table below lists the number of households in various cities and the estimat
 
 To generate simulated data: run `make data`.
 
-> `gen_data.py` generates 90 million records (1,500,000 * 30 * 2) by default
+> `gen_data.py` generates 90 million records (1,500,000 * 30 * 2) by default and it takes around ~15-20 mins to process it on 4 cores.
 
 ## References
 

@@ -1,6 +1,6 @@
 from tqdm import tqdm
 
-SIMULATED_DATA_FILE="example/simulated.csv"
+SIMULATED_DATA_FILE="examples/simulated.csv"
 NUM_NMIS=1500000
 NUM_NMI_SUFFIXES=2
 NUM_DAYS=30
