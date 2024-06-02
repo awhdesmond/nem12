@@ -26,6 +26,7 @@ The main programming language used is Python, which is universally used in data 
 
 ### Q4: How does the design help to make the codebase readable and maintainable for other engineers?
 ### Q5: Discuss any design patterns, coding conventions, or documentation practices you implemented to enhance readability and maintainability?
+(answered together)
 
 Given the scope of the project, we adopt a simple flat directory that stores all the necessary logic. Each python module is coherent and contains code under the same domain.
 
@@ -33,12 +34,14 @@ The main entry point is found in `main.py` and we use dependency injection to ma
 
 ### Q6: What will you do better next time?
 ### Q7: Reflect on areas where you see room for improvement and describe how you would approach them differently in future projects?
+(answered together)
 
 * Support remote file ingestion from a data lake like S3.
 * Support statistics generation so that we can validate the correctness of the data pipeline.
 
 ### Q8: What other ways could you have done this project?
 ### Q9: Explore alternative approaches or technologies that you considered during the development of the project?
+(answered together)
 
 An alternative approach that was considered was to use Apache Spark as the data processing framework to process the NEM12 meter data.
 
