@@ -1,7 +1,7 @@
 # NEM12 Data Loader
 
 * Please ensure the implementation is prepared to handle files of very large sizes.
-* For this assignment success would mean as close to production grade implementation as possible, which means
+* Success would mean as close to production grade implementation as possible, which means
     * idiomatic code structuring,
     * readability,
     * performance optimization,
